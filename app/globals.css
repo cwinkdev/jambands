@@ -1,26 +1,151 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-bg-dark: #18181b;
+  --color-bg-mid: #27272a;
+  --color-bg-light: #3f3f46;
+  --color-fg: #fff;
+  --color-accent: #ff277e; /* Miami hot pinkish-red */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* RGB LED Spectrum Gradient */
+  --gradient-rgb-led: linear-gradient(
+    90deg,
+    #ff0000 0%,    /* Red */
+    #ff8000 12.5%, /* Red-Orange */
+    #ffff00 25%,   /* Yellow */
+    #80ff00 37.5%, /* Yellow-Green */
+    #00ff00 50%,   /* Green */
+    #00ff80 62.5%, /* Green-Cyan */
+    #00ffff 75%,   /* Cyan */
+    #0080ff 87.5%, /* Cyan-Blue */
+    #0000ff 100%   /* Blue */
+  );
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-bg-dark);
+  --color-foreground: var(--color-fg);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-bg-dark: #18181b;
+    --color-bg-mid: #27272a;
+    --color-bg-light: #3f3f46;
+    --color-fg: #fff;
+    --color-accent: #ff277e;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, var(--color-bg-dark), var(--color-bg-mid), var(--color-bg-light));
+  color: var(--color-fg);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Accent utility class */
+.text-accent {
+  color: var(--color-accent);
+}
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+/* RGB LED Gradient Utilities */
+.bg-gradient-rgb {
+  background: var(--gradient-rgb-led);
+}
+
+.text-gradient-rgb {
+  background: var(--gradient-rgb-led);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.border-gradient-rgb {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--color-bg-dark), var(--color-bg-dark)) padding-box,
+              var(--gradient-rgb-led) border-box;
+}
+
+/* Animated RGB LED Effects */
+.text-gradient-rgb-animated {
+  background: linear-gradient(
+    90deg,
+    #ff0000 0%,
+    #ff8000 6.25%,
+    #ffff00 12.5%,
+    #80ff00 18.75%,
+    #00ff00 25%,
+    #00ff80 31.25%,
+    #00ffff 37.5%,
+    #0080ff 43.75%,
+    #ff0000 50%,
+    #ff8000 56.25%,
+    #ffff00 62.5%,
+    #80ff00 68.75%,
+    #00ff00 75%,
+    #00ff80 81.25%,
+    #00ffff 87.5%,
+    #0080ff 93.75%,
+    #ff0000 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: infinite-flow 3s linear infinite;
+}
+
+.bg-gradient-rgb-animated {
+  background: linear-gradient(
+    90deg,
+    #ff0000 0%,
+    #ff8000 6.25%,
+    #ffff00 12.5%,
+    #80ff00 18.75%,
+    #00ff00 25%,
+    #00ff80 31.25%,
+    #00ffff 37.5%,
+    #0080ff 43.75%,
+    #ff0000 50%,
+    #ff8000 56.25%,
+    #ffff00 62.5%,
+    #80ff00 68.75%,
+    #00ff00 75%,
+    #00ff80 81.25%,
+    #00ffff 87.5%,
+    #0080ff 93.75%,
+    #ff0000 100%
+  );
+  background-size: 200% 100%;
+  animation: infinite-flow 3s linear infinite;
+}
+
+@keyframes infinite-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* LED Glow Effect */
+.glow-rgb {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))
+          drop-shadow(0 0 20px rgba(255, 0, 128, 0.4))
+          drop-shadow(0 0 30px rgba(0, 255, 255, 0.3));
+}
+
+.glow-rgb-strong {
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))
+          drop-shadow(0 0 30px rgba(255, 0, 128, 0.6))
+          drop-shadow(0 0 45px rgba(0, 255, 255, 0.5));
 }
