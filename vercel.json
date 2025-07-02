@@ -1,4 +1,0 @@
-{
-  "buildCommand": "pnpm install --shamefully-hoist && pnpm run build",
-  "installCommand": "pnpm install --shamefully-hoist"
-}
