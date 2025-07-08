@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Logo from './Logo';
 
 const footerNavigation = {
   products: [
@@ -51,9 +52,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            <Link href="/" className="text-2xl font-bold text-accent">
-              JamBands
-            </Link>
+            <Logo variant="light" type="wide" size="lg" />
             <p className="mt-4 text-sm text-gray-300">
               Light up your night with premium LED accessories. Perfect for concerts, parties, and unforgettable events.
             </p>
@@ -62,7 +61,7 @@ export default function Footer() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-gray-400 hover:text-accent transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   <span className="sr-only">{item.name}</span>
                   {item.icon}
@@ -79,7 +78,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-300 hover:text-accent transition-colors"
+                    className="text-sm text-gray-300 hover:text-white transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -96,7 +95,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-300 hover:text-accent transition-colors"
+                    className="text-sm text-gray-300 hover:text-white transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -113,7 +112,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-300 hover:text-accent transition-colors"
+                    className="text-sm text-gray-300 hover:text-white transition-colors"
                   >
                     {item.name}
                   </Link>

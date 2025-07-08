@@ -23,3 +23,10 @@ export interface ButtonProps {
   onClick?: () => void;
   className?: string;
 }
+
+export interface LogoProps {
+  variant?: 'light' | 'dark';
+  type?: 'standard' | 'wide';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
+}

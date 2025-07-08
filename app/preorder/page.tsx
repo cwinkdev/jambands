@@ -23,11 +23,8 @@ export default function Preorder() {
               Limited quantities available for early supporters.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-rgb-animated text-white font-semibold py-4 px-10 rounded-lg text-lg transition-all duration-300 glow-rgb-strong hover:scale-105">
+              <button className="border-gradient-rgb hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-lg text-lg transition-all duration-300 hover:scale-105">
                 Pre-Order Now
-              </button>
-              <button className="border-gradient-rgb hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-lg transition-colors">
-                Watch Demo
               </button>
             </div>
           </div>
@@ -189,7 +186,7 @@ export default function Preorder() {
                     Priority Support
                   </li>
                 </ul>
-                <button className="w-full bg-gradient-rgb hover:bg-gradient-rgb-animated text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 glow-rgb">
+                <button className="w-full border-gradient-rgb hover:bg-white/10 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300">
                   Pre-Order Now
                 </button>
               </div>
@@ -342,7 +339,7 @@ export default function Preorder() {
               Limited quantities available. Secure your spot in the future of event lighting.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-rgb-animated text-white font-semibold py-4 px-10 rounded-lg text-lg transition-all duration-300 glow-rgb-strong hover:scale-105">
+              <button className="border-gradient-rgb hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-lg text-lg transition-all duration-300 hover:scale-105">
                 Pre-Order Now - Save 30%
               </button>
               <button className="border border-white/20 hover:bg-white/10 text-white font-semibold py-4 px-10 rounded-lg transition-colors">
