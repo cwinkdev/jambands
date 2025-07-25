@@ -11,7 +11,7 @@ export default function About() {
         <section className="relative px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Who Us?
+              Who? Us?
             </h1>
 
           </div>
