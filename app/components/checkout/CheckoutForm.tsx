@@ -80,9 +80,9 @@ function CheckoutFormContent({ amount, onSuccess, onError }: Omit<CheckoutFormPr
 
           <button
             disabled={isLoading || !stripe || !elements}
-            className="w-full bg-accent hover:bg-accent/80 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-lg transition-colors"
+            className="w-full border-gradient-rgb hover:bg-white/10 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:border-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb"
           >
-            {isLoading ? 'Processing...' : `Pay $${(amount / 100).toFixed(2)}`}
+            {isLoading ? 'Processing...' : 'Purchase'}
           </button>
         </div>
       </form>
@@ -96,13 +96,20 @@ export default function CheckoutForm(props: CheckoutFormProps) {
     appearance: {
       theme: 'night' as const,
       variables: {
-        colorPrimary: '#0570de',
-        colorBackground: 'rgba(255, 255, 255, 0.05)',
-        colorText: '#ffffff',
-        colorDanger: '#df1b41',
+        colorPrimary: '#ff277e', // Using your accent color
+        colorBackground: '#2a2a2a', // Warmer neutral gray
+        colorText: '#f5f5f5', // Brighter white text
+        colorTextSecondary: '#d1d5db', // Much brighter secondary text
+        colorTextPlaceholder: '#9ca3af', // Placeholder text
+        colorDanger: '#ef4444',
+        colorSuccess: '#10b981',
+        colorWarning: '#f59e0b',
         fontFamily: 'system-ui, sans-serif',
         spacingUnit: '4px',
         borderRadius: '8px',
+        colorInputBorder: '#4a4a4a', // Lighter border
+        colorInputBackground: '#2a2a2a', // Match main background
+        colorLogo: '#ffffff',
       },
     },
   };

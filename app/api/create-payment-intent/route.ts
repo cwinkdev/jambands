@@ -21,9 +21,7 @@ export async function POST(request: NextRequest) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount, // Amount in cents
       currency: currency,
-      automatic_payment_methods: {
-        enabled: true,
-      },
+
       metadata: {
         productId: productId || 'halo-i',
       },
