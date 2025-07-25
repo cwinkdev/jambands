@@ -15,7 +15,7 @@ export default function Lamps() {
               <span className="text-gradient-rgb-animated">Halo</span> Collection
             </h1>
             <p className="mx-auto max-w-3xl text-lg text-gray-300">
-              These desktop lamps showcase the RGB technology we&apos;re perfecting for festival wristbands – turning our development process into something beautiful for your space.
+              Precision-engineered RGB desktop lamps that bring vibrant, dynamic lighting to your space with stunning visual effects and premium build quality.
             </p>
           </div>
         </section>

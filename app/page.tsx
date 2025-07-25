@@ -12,9 +12,12 @@ export default function Home() {
         {/* Hero Section */}
         <section className="relative min-h-screen px-4 py-16 lg:pb-12 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto pt-16 max-w-7xl text-center">
-            <div className="mb-12 flex justify-center">
-              <Logo variant="light" size="xl" className="glow-rgb scale-200" />
-            </div>
+            <Link href="/lamps">
+              <div className="mb-12 flex justify-center">
+                <Logo variant="light" size="xl" className="glow-rgb scale-200" />
+              </div>
+            </Link>
+
             <h1 className="text-4xl pt-8 font-light tracking-tight text-white sm:text-5xl lg:text-7xl">
               Get{' '}
               <span className="text-gradient-rgb-animated glow-rgb">Lit</span>

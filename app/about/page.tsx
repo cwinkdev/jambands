@@ -22,25 +22,22 @@ export default function About() {
           <div className="mx-auto max-w-4xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold text-white mb-6">Our Journey</h2>
+                                <h2 className="text-3xl font-bold text-white mb-6">Our Journey</h2>
                 <p className="text-gray-300 mb-4">
-                  JamBands started with a vision: what if every person at a festival could become part of the light show?
-                  We&apos;re developing revolutionary RGB wristbands that synchronize with music and events, turning entire
-                  crowds into living, breathing displays of light and color.
-                </p>
-                <p className="text-gray-300 mb-4">
-                  Our target markets span festivals, nightlife venues, and even kids&apos; events – anywhere people gather
-                  to share experiences and create memories. Each wristband becomes a pixel in a massive, human-scale display.
+                  We&apos;re two friends with a shared passion for learning, creating, and building something meaningful.
+                  After years in traditional jobs, we always dreamed of working for ourselves and escaping the daily grind
+                  to pursue our entrepreneurial vision.
                 </p>
                 <p className="text-gray-300 mb-4">
-                  During our R&D process, we had some incredible components that didn&apos;t make it into the final wristband
-                  design. Rather than waste them, we crafted the Halo I – a desktop lamp featuring 14 RGB LEDs in an ouroboros
-                  pattern that showcases the light effects we&apos;re perfecting.
+                  Everything changed one night at a dubstep concert. As we watched the incredible light show, we noticed
+                  something missing – there weren&apos;t any truly stunning RGB wearables that looked cool and eye-catching.
+                  The crowd was amazing, but imagine if everyone could be part of the visual experience.
                 </p>
-                <p className="text-gray-300">
-                  The Halo I is more than just a lamp; it&apos;s a preview of the magic we&apos;re bringing to wearable tech.
-                  Every effect you see will eventually dance across thousands of wrists in perfect harmony.
+                <p className="text-gray-300 mb-4">
+                  We saw this as our opportunity. Why not invent our own wearable? We dove headfirst into creating RGB
+                  wristbands, iterating design after design, learning everything from electronics to user experience along the way.
                 </p>
+
               </div>
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8">
                 <div className="space-y-6">
@@ -51,8 +48,8 @@ export default function About() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">Innovation First</h3>
-                      <p className="text-gray-300 text-sm">Cutting-edge RGB wearable technology</p>
+                      <h3 className="text-lg font-semibold text-white">Passion Project</h3>
+                      <p className="text-gray-300 text-sm">Born from creativity and entrepreneurial spirit</p>
                     </div>
                   </div>
                   <div className="flex items-center">
@@ -62,8 +59,8 @@ export default function About() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">Crowd Connection</h3>
-                      <p className="text-gray-300 text-sm">Uniting thousands through synchronized light</p>
+                      <h3 className="text-lg font-semibold text-white">Music Inspired</h3>
+                      <p className="text-gray-300 text-sm">Created by music lovers for unforgettable experiences</p>
                     </div>
                   </div>
                   <div className="flex items-center">
@@ -73,8 +70,8 @@ export default function About() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">Zero Waste</h3>
-                      <p className="text-gray-300 text-sm">Every component finds purpose</p>
+                      <h3 className="text-lg font-semibold text-white">Quality Design</h3>
+                      <p className="text-gray-300 text-sm">Designed and crafted to look visually stunning</p>
                     </div>
                   </div>
                 </div>
@@ -90,10 +87,10 @@ export default function About() {
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 mb-12">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-4">Halo II Development</h3>
+                  <h3 className="text-xl font-bold text-white mb-4">Halo II</h3>
                   <p className="text-gray-300 text-sm mb-4">
-                    Our next lamp will be fully rechargeable, mobile, and feature custom light effects
-                    that we design in-house.
+                    An enhanced portable lighting experience featuring wireless freedom, extended battery life,
+                    and our signature custom visual effects library.
                   </p>
                   <div className="bg-accent/20 text-accent px-3 py-1 rounded-full text-xs font-medium inline-block">
                     In Progress
@@ -102,8 +99,8 @@ export default function About() {
                 <div>
                   <h3 className="text-xl font-bold text-white mb-4">Wristband Revolution</h3>
                   <p className="text-gray-300 text-sm mb-4">
-                    The custom effects we create for Halo II will eventually power our RGB wristbands,
-                    bringing festival crowds together like never before.
+                    Revolutionary wearable RGB technology that transforms entire festival crowds into
+                    synchronized displays of light, creating unprecedented collective experiences.
                   </p>
                   <div className="bg-accent/20 text-accent px-3 py-1 rounded-full text-xs font-medium inline-block">
                     Coming Soon

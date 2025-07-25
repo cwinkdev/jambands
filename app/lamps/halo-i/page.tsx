@@ -1,9 +1,68 @@
+'use client';
+
+import { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import CheckoutForm from '../../components/checkout/CheckoutForm';
 import { haloI } from '../../data/products';
 
 export default function HaloI() {
   const product = haloI;
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [isCreatingPayment, setIsCreatingPayment] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
+  const handleBuyNow = async () => {
+    console.log('Buy Now button clicked!'); // Debug log
+    setIsCreatingPayment(true);
+    try {
+      console.log('Creating payment intent for:', {
+        amount: Math.round(product.price * quantity * 100),
+        currency: 'usd',
+        productId: product.id,
+      }); // Debug log
+
+      const response = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: Math.round(product.price * quantity * 100), // Convert to cents
+          currency: 'usd',
+          productId: product.id,
+        }),
+      });
+
+            const data = await response.json();
+      console.log('API response:', data); // Debug log
+
+      if (data.clientSecret) {
+        console.log('Payment intent created successfully'); // Debug log
+        setClientSecret(data.clientSecret);
+        setShowCheckout(true);
+      } else {
+        console.error('No client secret in response:', data); // Debug log
+        alert('Failed to create payment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error creating payment:', error);
+      alert('Failed to create payment. Please try again.');
+    } finally {
+      setIsCreatingPayment(false);
+    }
+  };
+
+  const handlePaymentSuccess = () => {
+    setShowCheckout(false);
+    // You could redirect to a success page or show a success message
+    alert('Payment successful! Thank you for your purchase.');
+  };
+
+  const handlePaymentError = (error: string) => {
+    console.error('Payment error:', error);
+  };
 
   return (
     <>
@@ -61,11 +120,17 @@ export default function HaloI() {
                     <div className="flex justify-between items-center text-gray-300">
                       <span className="text-sm">Quantity:</span>
                       <div className="flex items-center space-x-2">
-                        <button className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-sm"
+                        >
                           <span className="text-white">-</span>
                         </button>
-                        <span className="text-white font-semibold min-w-[20px] text-center">1</span>
-                        <button className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+                        <span className="text-white font-semibold min-w-[20px] text-center">{quantity}</span>
+                        <button
+                          onClick={() => setQuantity(quantity + 1)}
+                          className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-sm"
+                        >
                           <span className="text-white">+</span>
                         </button>
                       </div>
@@ -73,11 +138,12 @@ export default function HaloI() {
                   </div>
 
                   <div className="space-y-3 mb-6">
-                    <button className="w-full border-gradient-rgb hover:bg-white/10 text-white font-semibold py-3 px-4 rounded-lg text-sm transition-all duration-300 hover:scale-105">
-                      Add to Cart
-                    </button>
-                    <button className="w-full bg-accent hover:bg-accent/80 text-white font-semibold py-3 px-4 rounded-lg transition-colors text-sm">
-                      Buy Now
+                    <button
+                      onClick={handleBuyNow}
+                      disabled={isCreatingPayment}
+                      className="w-full border-gradient-rgb hover:bg-white/10 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-lg text-sm transition-all duration-300 hover:scale-105"
+                    >
+                      {isCreatingPayment ? 'Processing...' : `Buy Now - $${(product.price * quantity).toFixed(2)}`}
                     </button>
                   </div>
 
@@ -91,6 +157,39 @@ export default function HaloI() {
             </div>
           </div>
         </section>
+
+        {/* Checkout Modal */}
+        {showCheckout && clientSecret && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-gray-900 rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-white">Complete Your Purchase</h2>
+                <button
+                  onClick={() => setShowCheckout(false)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="mb-4 p-4 bg-white/5 rounded-lg">
+                <div className="flex justify-between items-center text-sm text-gray-300">
+                  <span>{product.name} × {quantity}</span>
+                  <span>${(product.price * quantity).toFixed(2)}</span>
+                </div>
+              </div>
+
+              <CheckoutForm
+                clientSecret={clientSecret}
+                amount={Math.round(product.price * quantity * 100)}
+                onSuccess={handlePaymentSuccess}
+                onError={handlePaymentError}
+              />
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
