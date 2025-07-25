@@ -11,7 +11,7 @@ export default function Contact() {
         <section className="relative px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Hit us up
+              Hit us up.
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 sm:text-xl">
               Questions or inquiries? Let us know.
