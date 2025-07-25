@@ -34,15 +34,15 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg-dark: #18181b;
-    --color-bg-mid: #27272a;
-    --color-bg-light: #3f3f46;
+    --color-bg-mid: #1a1a1a;
+    --color-bg-light: #1f1f1f;
     --color-fg: #fff;
     --color-accent: #ff277e;
   }
 }
 
 body {
-  background: linear-gradient(135deg, var(--color-bg-dark), var(--color-bg-mid), var(--color-bg-light));
+  background: var(--color-bg-dark);
   color: var(--color-fg);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
@@ -148,6 +148,59 @@ body {
   filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))
           drop-shadow(0 0 30px rgba(255, 0, 128, 0.6))
           drop-shadow(0 0 45px rgba(0, 255, 255, 0.5));
+}
+
+/* Text Stroke/Outline Utilities for Readability */
+.text-outlined {
+  color: white;
+  -webkit-text-stroke: 2px #000;
+  text-stroke: 2px #000;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.text-outlined-thin {
+  color: white;
+  -webkit-text-stroke: 1px #000;
+  text-stroke: 1px #000;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.text-outlined-light {
+  color: white;
+  -webkit-text-stroke: 0.5px #000;
+  text-stroke: 0.5px #000;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+}
+
+.text-rainbow-outlined {
+  background: var(--gradient-rgb-led);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 2px #000;
+  text-stroke: 2px #000;
+  animation: infinite-flow 3s linear infinite;
+}
+
+.text-shadow-strong {
+  color: white;
+  text-shadow: 2px 2px 0px #000,
+               -2px -2px 0px #000,
+               2px -2px 0px #000,
+               -2px 2px 0px #000,
+               0px 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.text-gradient-readable {
+  background: var(--gradient-rgb-led);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9),
+               -1px -1px 2px rgba(0, 0, 0, 0.9);
+  animation: infinite-flow 3s linear infinite;
 }
 
 /* SVG Stroke Gradient Utilities */

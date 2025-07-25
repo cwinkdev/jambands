@@ -1,8 +1,15 @@
 // Navigation Types
 export interface NavItem {
   name: string;
-  href: string;
+  href?: string;
   current?: boolean;
+  dropdown?: DropdownItem[];
+}
+
+export interface DropdownItem {
+  name: string;
+  href: string;
+  description?: string;
 }
 
 // Product Types
