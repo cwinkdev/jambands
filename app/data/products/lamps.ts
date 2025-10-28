@@ -2,15 +2,15 @@ import { ProductInfo } from '../types';
 
 export const haloI: ProductInfo = {
   id: 'halo-i',
-  name: 'Halo I',
-  title: 'Halo I',
-  price: 9.99,
+  name: 'HALO',
+  title: 'HALO',
+  price: 19.99,
   category: 'lamps',
   status: 'available',
   features: [
     {
       id: 'leds',
-      text: '14 RGB LEDs'
+      text: '15 RGB LEDs'
     },
     {
       id: 'effects',

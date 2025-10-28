@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import CheckoutForm from '../../components/checkout/CheckoutForm';
+import ProductGallery from '../../components/ProductGallery';
+import ColorPicker from '../../components/ColorPicker';
 import { haloI } from '../../data/products';
 
 export default function HaloI() {
@@ -12,6 +14,48 @@ export default function HaloI() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState('standard-white');
+  const [hoveredColor, setHoveredColor] = useState<string | null>(null);
+
+  const colorOptions = [
+    { id: 'standard-white', name: 'Standard White', color: '#ffffff' },
+    { id: 'ice-blue-translucent', name: 'Ice Blue Translucent', color: '#b3e5fc' },
+    { id: 'purple-translucent', name: 'Purple Translucent', color: '#ce93d8' },
+    { id: 'jade-translucent', name: 'Jade Translucent', color: '#a5d6a7' },
+    { id: 'orange-glow', name: 'Orange Glow', color: '#ffb74d' },
+    { id: 'blue-green-pearl', name: 'Blue-Green Pearl', color: '#80cbc4' },
+  ];
+
+  // Map colors to their corresponding model images
+  const colorImageMap = {
+    'standard-white': 'white_model',
+    'ice-blue-translucent': 'light_blue_model',
+    'purple-translucent': 'purple_model',
+    'jade-translucent': 'jade_model',
+    'orange-glow': 'orange_model',
+    'blue-green-pearl': 'blue_green_model',
+  };
+
+  // Images in the order you specified:
+  // 1. color1 (initial), 2. video, 3. back/top views, 4. other color views, 5. colored models
+  const productImages = [
+    '/products/halo/images/color1.jpg',           // Initial image
+    '/products/halo/images/back.jpg',             // Back view
+    '/products/halo/images/side.jpg',             // Side view
+    '/products/halo/images/top_front.jpg',        // Top front view
+    '/products/halo/images/top_back.jpg',         // Top back view
+    '/products/halo/images/front.jpg',            // Front view
+    '/products/halo/images/color2.jpg',          // Color 2
+    '/products/halo/images/color3.jpg',          // Color 3
+    '/products/halo/images/color4.jpg',          // Color 4
+    '/products/halo/images/white_model.jpg',     // White model
+    '/products/halo/images/light_blue_model.jpg', // Light blue model
+    '/products/halo/images/purple_model.jpg',    // Purple model
+    '/products/halo/images/jade_model.jpg',      // Jade model
+    '/products/halo/images/orange_model.jpg',    // Orange model
+    '/products/halo/images/blue_green_model.jpg', // Blue-green model
+    '/products/halo/images/all_models.jpg',      // All models
+  ];
 
   const handleBuyNow = async () => {
     console.log('Buy Now button clicked!'); // Debug log
@@ -69,89 +113,86 @@ export default function HaloI() {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-6xl">
-              <span className="text-gradient-rgb-animated">{product.title}</span>
-            </h1>
 
-          </div>
-        </section>
 
         {/* Product Showcase */}
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
+        <section className="px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-16">
-              {/* Product Image */}
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 text-center">
-                <div className="w-64 h-64 bg-gradient-rgb-animated rounded-xl mx-auto mb-6 glow-rgb flex items-center justify-center">
-                  <span className="text-outlined-light font-semibold text-lg">{product.name}</span>
-                </div>
+            {/* Product Layout - Etsy/Amazon Style */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              {/* Left Column - Product Gallery */}
+              <div className="order-2 lg:order-1">
+                <ProductGallery
+                  images={productImages}
+                  video="/products/halo/videos/JB_Halo.mov"
+                  alt="Halo I RGB LED Lamp"
+                  selectedColor={hoveredColor || selectedColor}
+                  colorImageMap={colorImageMap}
+                />
               </div>
 
-              {/* Product Features */}
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-6">Features</h3>
-                <ul className="space-y-4">
-                  {product.features.map((feature) => (
-                    <li key={feature.id} className="flex items-start">
-                      <div className="w-6 h-6 bg-accent/20 rounded-full flex items-center justify-center mr-3 mt-0.5">
-                        <svg className="w-3 h-3 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <span className="text-gray-300">{feature.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Right Column - Product Info */}
+              <div className="order-1 lg:order-2">
+                <div className="sticky">
+                  <h2 className="text-4xl font-bold text-white mb-4">{product.title}</h2>
 
-              {/* Purchase Section */}
-              <div>
-                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                  <h3 className="text-xl font-bold text-white mb-4">{product.name} Lamp</h3>
+                  {/* Price */}
                   <div className="mb-6">
-                    <span className="text-3xl font-bold text-white">${product.price}</span>
-                    <p className="text-xs text-gray-400 mt-1">{product.shipping}</p>
+                    <span className="text-4xl font-bold text-white">${product.price}</span>
                   </div>
 
-                  <div className="space-y-4 mb-6">
-                    <div className="flex justify-between items-center text-gray-300">
-                      <span className="text-sm">Quantity:</span>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-sm"
-                        >
-                          <span className="text-white">-</span>
-                        </button>
-                        <span className="text-white font-semibold min-w-[20px] text-center">{quantity}</span>
-                        <button
-                          onClick={() => setQuantity(quantity + 1)}
-                          className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors text-sm"
-                        >
-                          <span className="text-white">+</span>
-                        </button>
-                      </div>
+                  {/* Description */}
+                  <div className="mb-8">
+                    <p className="text-gray-300 text-lg mb-4">
+                      Sleek and satisfying. This custom, full RGB LED lamp brings a vibe into any room.
+                    </p>
+                    <ul className="text-gray-300 space-y-2">
+                      {product.features.map((feature) => (
+                        <li key={feature.id} className="flex items-center">
+                          <span className="text-accent mr-3">•</span>
+                          {feature.text}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Color Selection */}
+                  <ColorPicker
+                    colors={colorOptions}
+                    selectedColor={selectedColor}
+                    onColorChange={setSelectedColor}
+                    onColorHover={setHoveredColor}
+                  />
+
+                  {/* Quantity */}
+                  <div className="mb-8">
+                    <h3 className="text-lg font-semibold text-white mb-4">Quantity</h3>
+                    <div className="flex items-center space-x-4">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors"
+                      >
+                        <span className="text-white text-lg">-</span>
+                      </button>
+                      <span className="text-white font-semibold text-xl min-w-[40px] text-center">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors"
+                      >
+                        <span className="text-white text-lg">+</span>
+                      </button>
                     </div>
                   </div>
 
-                  <div className="space-y-3 mb-6">
-                    <button
-                      onClick={handleBuyNow}
-                      disabled={isCreatingPayment}
-                      className="w-full border-gradient-rgb hover:bg-white/10 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-lg text-sm transition-all duration-300 hover:scale-105"
-                    >
-                      {isCreatingPayment ? 'Processing...' : `Buy Now - $${(product.price * quantity).toFixed(2)}`}
-                    </button>
-                  </div>
+                  {/* Add to Cart Button */}
+                  <button
+                    onClick={handleBuyNow}
+                    disabled={isCreatingPayment}
+                    className="w-full border-gradient-rgb hover:bg-white/10 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:border-gray-600 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb mb-8"
+                  >
+                    {isCreatingPayment ? 'Processing...' : `Purchase - $${(product.price * quantity).toFixed(2)}`}
+                  </button>
 
-                  <div className="text-xs text-gray-400 space-y-1">
-                    {product.warranty.map((item, index) => (
-                      <p key={index}>✓ {item}</p>
-                    ))}
-                  </div>
                 </div>
               </div>
             </div>
