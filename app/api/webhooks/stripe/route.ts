@@ -46,16 +46,29 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
   console.log('Customer Email:', session.customer_details?.email);
   console.log('Payment Status:', session.payment_status);
 
-  // Get shipping address
-  if (session.shipping) {
+  // Get shipping address - using type assertion since shipping_details might not be in base Session type
+  const sessionWithShipping = session as Stripe.Checkout.Session & {
+    shipping_details?: {
+      name?: string;
+      address?: {
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postal_code?: string;
+        country?: string;
+      };
+    };
+  };
+  if (sessionWithShipping.shipping_details) {
     console.log('Shipping Address:');
-    console.log('  Name:', session.shipping.name);
-    console.log('  Address Line 1:', session.shipping.address?.line1);
-    console.log('  Address Line 2:', session.shipping.address?.line2);
-    console.log('  City:', session.shipping.address?.city);
-    console.log('  State:', session.shipping.address?.state);
-    console.log('  Postal Code:', session.shipping.address?.postal_code);
-    console.log('  Country:', session.shipping.address?.country);
+    console.log('  Name:', sessionWithShipping.shipping_details.name);
+    console.log('  Address Line 1:', sessionWithShipping.shipping_details.address?.line1);
+    console.log('  Address Line 2:', sessionWithShipping.shipping_details.address?.line2);
+    console.log('  City:', sessionWithShipping.shipping_details.address?.city);
+    console.log('  State:', sessionWithShipping.shipping_details.address?.state);
+    console.log('  Postal Code:', sessionWithShipping.shipping_details.address?.postal_code);
+    console.log('  Country:', sessionWithShipping.shipping_details.address?.country);
   }
 
   // Get product information from metadata
