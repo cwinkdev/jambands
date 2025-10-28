@@ -47,15 +47,15 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
   console.log('Payment Status:', session.payment_status);
 
   // Get shipping address
-  if (session.shipping_details) {
+  if (session.shipping) {
     console.log('Shipping Address:');
-    console.log('  Name:', session.shipping_details.name);
-    console.log('  Address Line 1:', session.shipping_details.address?.line1);
-    console.log('  Address Line 2:', session.shipping_details.address?.line2);
-    console.log('  City:', session.shipping_details.address?.city);
-    console.log('  State:', session.shipping_details.address?.state);
-    console.log('  Postal Code:', session.shipping_details.address?.postal_code);
-    console.log('  Country:', session.shipping_details.address?.country);
+    console.log('  Name:', session.shipping.name);
+    console.log('  Address Line 1:', session.shipping.address?.line1);
+    console.log('  Address Line 2:', session.shipping.address?.line2);
+    console.log('  City:', session.shipping.address?.city);
+    console.log('  State:', session.shipping.address?.state);
+    console.log('  Postal Code:', session.shipping.address?.postal_code);
+    console.log('  Country:', session.shipping.address?.country);
   }
 
   // Get product information from metadata
