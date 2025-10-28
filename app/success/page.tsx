@@ -25,7 +25,7 @@ export default function Success() {
             </h1>
 
             <p className="mx-auto max-w-2xl text-lg text-gray-300 mb-8">
-              Thank you for your purchase! Your Halo I lamp is on its way.
+              Thank you for your purchase! Your Halo lamp is on its way.
               You&apos;ll receive a confirmation email shortly with tracking information.
             </p>
 

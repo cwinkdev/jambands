@@ -11,8 +11,6 @@ import { haloI } from '../../data/products';
 export default function HaloI() {
   const product = haloI;
   const [showCheckout, setShowCheckout] = useState(false);
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [isCreatingPayment, setIsCreatingPayment] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('standard-white');
   const [hoveredColor, setHoveredColor] = useState<string | null>(null);
@@ -57,45 +55,8 @@ export default function HaloI() {
     '/products/halo/images/all_models.jpg',      // All models
   ];
 
-  const handleBuyNow = async () => {
-    console.log('Buy Now button clicked!'); // Debug log
-    setIsCreatingPayment(true);
-    try {
-      console.log('Creating payment intent for:', {
-        amount: Math.round(product.price * quantity * 100),
-        currency: 'usd',
-        productId: product.id,
-      }); // Debug log
-
-      const response = await fetch('/api/create-payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: Math.round(product.price * quantity * 100), // Convert to cents
-          currency: 'usd',
-          productId: product.id,
-        }),
-      });
-
-            const data = await response.json();
-      console.log('API response:', data); // Debug log
-
-      if (data.clientSecret) {
-        console.log('Payment intent created successfully'); // Debug log
-        setClientSecret(data.clientSecret);
-        setShowCheckout(true);
-      } else {
-        console.error('No client secret in response:', data); // Debug log
-        alert('Failed to create payment. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error creating payment:', error);
-      alert('Failed to create payment. Please try again.');
-    } finally {
-      setIsCreatingPayment(false);
-    }
+  const handleBuyNow = () => {
+    setShowCheckout(true);
   };
 
   const handlePaymentSuccess = () => {
@@ -187,10 +148,9 @@ export default function HaloI() {
                   {/* Add to Cart Button */}
                   <button
                     onClick={handleBuyNow}
-                    disabled={isCreatingPayment}
-                    className="w-full border-gradient-rgb hover:bg-white/10 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:border-gray-600 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb mb-8"
+                    className="w-full border-gradient-rgb hover:bg-white/10 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb mb-8"
                   >
-                    {isCreatingPayment ? 'Processing...' : `Purchase - $${(product.price * quantity).toFixed(2)}`}
+                    Purchase - ${(product.price * quantity).toFixed(2)}
                   </button>
 
                 </div>
@@ -200,7 +160,7 @@ export default function HaloI() {
         </section>
 
         {/* Checkout Modal */}
-        {showCheckout && clientSecret && (
+        {showCheckout && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-gray-900 rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
@@ -220,11 +180,15 @@ export default function HaloI() {
                   <span>{product.name} × {quantity}</span>
                   <span>${(product.price * quantity).toFixed(2)}</span>
                 </div>
+                <div className="flex justify-between items-center text-sm text-gray-300 mt-1">
+                  <span>Color: {colorOptions.find(c => c.id === selectedColor)?.name}</span>
+                </div>
               </div>
 
               <CheckoutForm
-                clientSecret={clientSecret}
                 amount={Math.round(product.price * quantity * 100)}
+                productId={product.id}
+                productName={`${product.name} (${colorOptions.find(c => c.id === selectedColor)?.name})`}
                 onSuccess={handlePaymentSuccess}
                 onError={handlePaymentError}
               />
