@@ -86,7 +86,7 @@ export default function HaloI() {
                 <ProductGallery
                   images={productImages}
                   video="/products/halo/videos/JB_Halo.mov"
-                  alt="Halo I RGB LED Lamp"
+                  alt="Halo RGB LED Lamp"
                   selectedColor={hoveredColor || selectedColor}
                   colorImageMap={colorImageMap}
                 />
