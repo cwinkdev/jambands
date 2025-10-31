@@ -1,7 +1,7 @@
 import { ProductInfo } from '../types';
 
 export const haloI: ProductInfo = {
-  id: 'halo-i',
+  id: 'halo',
   name: 'HALO',
   title: 'HALO',
   price: 19.99,

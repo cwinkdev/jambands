@@ -11,7 +11,7 @@ import { lampProducts } from './lamps';
 import { wristbandProducts } from './wristbands';
 import { accessoryProducts } from './accessories';
 
-// Currently only contains Halo I - other categories are placeholders
+// Currently only contains Halo - other categories are placeholders
 export const allProducts = {
   ...lampProducts
   // wristbands and accessories are empty for now

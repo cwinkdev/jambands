@@ -34,11 +34,11 @@ export default function Lamps() {
           </div>
         </section>
 
-        {/* Featured Product - Halo I */}
+        {/* Featured Product - Halo */}
         <section className="px-4 py-16 pt-0 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
             {/* Main Featured Product */}
-            <Link href="/lamps/halo-i" className="group block">
+            <Link href="/lamps/halo" className="group block">
               <div className="p-12 text-center relative overflow-hidden">
                 <div className="w-64 h-64 bg-gradient-rgb-animated rounded-2xl mx-auto mb-8 glow-rgb flex items-center justify-center group-hover:glow-rgb-strong transition-all duration-300">
                   <span className="text-outlined-light font-bold text-2xl">HALO</span>

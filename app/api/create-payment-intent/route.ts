@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         allowed_countries: ['US', 'CA'], // Add more countries as needed
       },
       metadata: {
-        productId: productId || 'halo-i',
+        productId: productId || 'halo',
       },
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/lamps/halo`,

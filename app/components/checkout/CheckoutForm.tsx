@@ -12,7 +12,7 @@ interface CheckoutFormProps {
 
 export default function CheckoutForm({
   amount,
-  productId = 'halo-i',
+  productId = 'halo',
   productName = 'HALO Lamp',
   onError
 }: CheckoutFormProps) {

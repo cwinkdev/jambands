@@ -12,7 +12,7 @@ const navigation: NavItem[] = [
     name: 'Lamps',
     href: '/lamps',
     dropdown: [
-      { name: 'Halo I', href: '/lamps/halo-i' }
+      { name: 'Halo', href: '/lamps/halo' }
     ]
   },
   // { name: 'Accessories', href: '/accessories' },
