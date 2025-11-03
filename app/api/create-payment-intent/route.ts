@@ -61,15 +61,16 @@ export async function POST(request: NextRequest) {
       line_items: lineItems,
       mode: 'payment',
       payment_method_types: ['card'],
-      shipping_address_collection: {
-        allowed_countries: ['US', 'CA'], // Add more countries as needed
-      },
+      // Note: We've already collected shipping address in the checkout form,
+      // so we don't need Stripe to collect it again (removed shipping_address_collection)
       metadata: {
         productId: productId || 'halo',
         shippingCost: shippingCost.toString(),
-        // Store shipping address in metadata for order fulfillment
+        // Store complete shipping address in metadata for order fulfillment
         ...(shippingAddress && {
           shippingName: shippingAddress.name,
+          shippingStreet1: shippingAddress.street1,
+          shippingStreet2: shippingAddress.street2 || '',
           shippingCity: shippingAddress.city,
           shippingState: shippingAddress.state,
           shippingZip: shippingAddress.zip,

@@ -46,33 +46,24 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
   console.log('Customer Email:', session.customer_details?.email);
   console.log('Payment Status:', session.payment_status);
 
-  // Get shipping address - using type assertion since shipping_details might not be in base Session type
-  const sessionWithShipping = session as Stripe.Checkout.Session & {
-    shipping_details?: {
-      name?: string;
-      address?: {
-        line1?: string;
-        line2?: string;
-        city?: string;
-        state?: string;
-        postal_code?: string;
-        country?: string;
-      };
-    };
-  };
-  if (sessionWithShipping.shipping_details) {
+  // Get shipping address from metadata (since we collect it in the checkout form)
+  const shippingAddress = session.metadata;
+  if (shippingAddress?.shippingName) {
     console.log('Shipping Address:');
-    console.log('  Name:', sessionWithShipping.shipping_details.name);
-    console.log('  Address Line 1:', sessionWithShipping.shipping_details.address?.line1);
-    console.log('  Address Line 2:', sessionWithShipping.shipping_details.address?.line2);
-    console.log('  City:', sessionWithShipping.shipping_details.address?.city);
-    console.log('  State:', sessionWithShipping.shipping_details.address?.state);
-    console.log('  Postal Code:', sessionWithShipping.shipping_details.address?.postal_code);
-    console.log('  Country:', sessionWithShipping.shipping_details.address?.country);
+    console.log('  Name:', shippingAddress.shippingName);
+    console.log('  Address Line 1:', shippingAddress.shippingStreet1);
+    console.log('  Address Line 2:', shippingAddress.shippingStreet2 || '(none)');
+    console.log('  City:', shippingAddress.shippingCity);
+    console.log('  State:', shippingAddress.shippingState);
+    console.log('  Postal Code:', shippingAddress.shippingZip);
+    console.log('  Country:', shippingAddress.shippingCountry);
+  } else {
+    console.log('Shipping Address: Not found in metadata');
   }
 
   // Get product information from metadata
   console.log('Product ID:', session.metadata?.productId);
+  console.log('Shipping Cost:', session.metadata?.shippingCost);
 
   // Get line items for more details
   if (session.line_items) {
