@@ -49,7 +49,7 @@ export default function Success() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/lamps"
+                href="/lamps/halo"
                 className="border-gradient-rgb hover:bg-white/10 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105"
               >
                 Continue Shopping

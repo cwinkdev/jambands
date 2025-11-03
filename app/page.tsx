@@ -24,7 +24,7 @@ export default function Home() {
               The future of lighting for festivals, nightlife, and beyond.
             </p>
             <div className="mt-24 flex flex-col sm:flex-row gap-1 justify-center">
-              <Link href="/lamps" className="border-gradient-rgb hover:bg-white/10 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105">
+              <Link href="/lamps/halo" className="border-gradient-rgb hover:bg-white/10 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105">
                 Explore Our Products
               </Link>
             </div>

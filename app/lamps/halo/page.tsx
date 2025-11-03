@@ -189,6 +189,7 @@ export default function HaloI() {
                 amount={Math.round(product.price * quantity * 100)}
                 productId={product.id}
                 productName={`${product.name} (${colorOptions.find(c => c.id === selectedColor)?.name})`}
+                quantity={quantity}
                 onSuccess={handlePaymentSuccess}
                 onError={handlePaymentError}
               />

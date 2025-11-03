@@ -3,8 +3,8 @@ export * from './lamps';
 export * from './wristbands';
 export * from './accessories';
 
-// Export types
-export * from '../types';
+// Export types from main types file
+export type { ProductInfo, ProductFeature, ProductCategory } from '@/app/types';
 
 // Convenience exports for easy access
 import { lampProducts } from './lamps';

@@ -7,15 +7,12 @@ import Logo from './Logo';
 
 const navigation: NavItem[] = [
   { name: 'Home', href: '/' },
-  // { name: 'Wristbands', href: '/wristbands' },
   {
-    name: 'Lamps',
-    href: '/lamps',
+    name: 'Products',
     dropdown: [
-      { name: 'Halo', href: '/lamps/halo' }
+      { name: 'HALO', href: '/lamps/halo' }
     ]
   },
-  // { name: 'Accessories', href: '/accessories' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ];
@@ -94,14 +91,22 @@ export default function Navbar() {
                         >
                           <div>
                             {item.dropdown.map((dropdownItem) => (
-                              <Link
-                                key={dropdownItem.name}
-                                href={dropdownItem.href}
-                                className="block px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors"
-                              >
-                                <div className="font-medium">{dropdownItem.name}</div>
-
-                              </Link>
+                              dropdownItem.href ? (
+                                <Link
+                                  key={dropdownItem.name}
+                                  href={dropdownItem.href}
+                                  className="block px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors"
+                                >
+                                  <div className="font-medium">{dropdownItem.name}</div>
+                                </Link>
+                              ) : (
+                                <div
+                                  key={dropdownItem.name}
+                                  className="block px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider"
+                                >
+                                  {dropdownItem.name}
+                                </div>
+                              )
                             ))}
                           </div>
                         </div>
@@ -184,14 +189,23 @@ export default function Navbar() {
                     )}
                     <div className="ml-4 space-y-1">
                       {item.dropdown.map((dropdownItem) => (
-                        <Link
-                          key={dropdownItem.name}
-                          href={dropdownItem.href}
-                          className="block rounded-md px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {dropdownItem.name}
-                        </Link>
+                        dropdownItem.href ? (
+                          <Link
+                            key={dropdownItem.name}
+                            href={dropdownItem.href}
+                            className="block rounded-md px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {dropdownItem.name}
+                          </Link>
+                        ) : (
+                          <div
+                            key={dropdownItem.name}
+                            className="block rounded-md px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                          >
+                            {dropdownItem.name}
+                          </div>
+                        )
                       ))}
                     </div>
                   </div>

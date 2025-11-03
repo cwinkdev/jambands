@@ -4,7 +4,7 @@ import Logo from './Logo';
 const footerNavigation = {
   products: [
     { name: 'LED Wristbands', href: '/wristbands' },
-    { name: 'Lamps', href: '/lamps' },
+    { name: 'HALO', href: '/lamps/halo' },
     { name: 'Accessories', href: '/accessories' },
   ],
   company: [

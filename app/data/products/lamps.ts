@@ -1,4 +1,4 @@
-import { ProductInfo } from '../types';
+import { ProductInfo } from '@/app/types';
 
 export const haloI: ProductInfo = {
   id: 'halo',
@@ -34,7 +34,10 @@ export const haloI: ProductInfo = {
     '2-year manufacturer warranty',
     'Ships within 2-3 business days'
   ],
-  shipping: 'Free shipping on orders over $25'
+  shippingWeight: 4.62, // ounces
+  shippingLength: 6, // inches
+  shippingWidth: 6, // inches
+  shippingHeight: 7, // inches
 };
 
 export const lampProducts = {
