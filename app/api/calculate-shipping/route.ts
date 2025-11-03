@@ -6,12 +6,12 @@ import { haloI } from '@/app/data/products/lamps';
 const SHIPPO_API_BASE = 'https://api.goshippo.com';
 
 // Get API key from environment (use test key for development)
-const SHIPPO_API_KEY = process.env.SHIPPO_API_KEY || process.env.SHIPPO_TEST_API_KEY;
+const SHIPPO_API_KEY = process.env.SHIPPO_API_KEY || process.env.SHIPPO_API_KEY;
 
 // Your shipping origin address (update these with your actual warehouse/fulfillment address)
 const SHIPPING_ORIGIN = {
   name: 'Jambands',
-  street1: process.env.SHIPPING_ORIGIN_STREET1 || '123 Main St',
+  street1: process.env.SHIPPING_ORIGIN_STREET || '123 Main St',
   city: process.env.SHIPPING_ORIGIN_CITY || 'Los Angeles',
   state: process.env.SHIPPING_ORIGIN_STATE || 'CA',
   zip: process.env.SHIPPING_ORIGIN_ZIP || '90001',
@@ -97,6 +97,16 @@ export async function POST(request: NextRequest) {
     const recipientAddress = await recipientAddressResponse.json();
 
     // Step 2: Create sender address (origin)
+    // Log the origin address being used for verification
+    console.log('Shipping Origin Address:', {
+      name: SHIPPING_ORIGIN.name,
+      street1: SHIPPING_ORIGIN.street1,
+      city: SHIPPING_ORIGIN.city,
+      state: SHIPPING_ORIGIN.state,
+      zip: SHIPPING_ORIGIN.zip,
+      country: SHIPPING_ORIGIN.country,
+    });
+
     const senderAddressResponse = await fetch(`${SHIPPO_API_BASE}/addresses`, {
       method: 'POST',
       headers: {
