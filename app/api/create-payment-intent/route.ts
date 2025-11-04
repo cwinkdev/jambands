@@ -83,6 +83,27 @@ export async function POST(request: NextRequest) {
     // Debug: Log metadata being sent to Stripe
     console.log('Metadata being sent to Stripe:', JSON.stringify(metadata, null, 2));
 
+    // Get base URL for redirects - works for both dev and production
+    // Use environment variable if set, otherwise determine from request
+    const getBaseUrl = (): string => {
+      if (process.env.NEXT_PUBLIC_BASE_URL) {
+        return process.env.NEXT_PUBLIC_BASE_URL;
+      }
+
+      // Get from request headers (works in production)
+      const host = request.headers.get('host') || '';
+      const protocol = request.headers.get('x-forwarded-proto') || 'https';
+
+      if (host) {
+        return `${protocol}://${host}`;
+      }
+
+      throw new Error('Unable to determine base URL. Please set NEXT_PUBLIC_BASE_URL environment variable.');
+    };
+
+    const baseUrl = getBaseUrl();
+    console.log('Using base URL for redirects:', baseUrl);
+
     // Create checkout session
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       line_items: lineItems,
@@ -96,8 +117,8 @@ export async function POST(request: NextRequest) {
       payment_intent_data: {
         metadata: metadata,
       },
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/lamps/halo`,
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/lamps/halo`,
     };
 
     const session = await stripe.checkout.sessions.create(sessionParams);
