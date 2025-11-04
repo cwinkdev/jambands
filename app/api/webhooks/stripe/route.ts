@@ -46,24 +46,66 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
   console.log('Customer Email:', session.customer_details?.email);
   console.log('Payment Status:', session.payment_status);
 
-  // Get shipping address from metadata (since we collect it in the checkout form)
-  const shippingAddress = session.metadata;
-  if (shippingAddress?.shippingName) {
-    console.log('Shipping Address:');
-    console.log('  Name:', shippingAddress.shippingName);
-    console.log('  Address Line 1:', shippingAddress.shippingStreet1);
-    console.log('  Address Line 2:', shippingAddress.shippingStreet2 || '(none)');
-    console.log('  City:', shippingAddress.shippingCity);
-    console.log('  State:', shippingAddress.shippingState);
-    console.log('  Postal Code:', shippingAddress.shippingZip);
-    console.log('  Country:', shippingAddress.shippingCountry);
-  } else {
-    console.log('Shipping Address: Not found in metadata');
+  // Get shipping address - check multiple sources
+  const sessionWithShipping = session as Stripe.Checkout.Session & {
+    shipping_details?: {
+      name?: string;
+      address?: {
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postal_code?: string;
+        country?: string;
+      };
+    };
+  };
+
+  let shippingAddressFound = false;
+
+  // First, try Stripe's shipping_details (if address collection was enabled)
+  if (sessionWithShipping.shipping_details?.address) {
+    console.log('Shipping Address (from Stripe shipping_details):');
+    console.log('  Name:', sessionWithShipping.shipping_details.name);
+    console.log('  Address Line 1:', sessionWithShipping.shipping_details.address.line1);
+    console.log('  Address Line 2:', sessionWithShipping.shipping_details.address.line2 || '(none)');
+    console.log('  City:', sessionWithShipping.shipping_details.address.city);
+    console.log('  State:', sessionWithShipping.shipping_details.address.state);
+    console.log('  Postal Code:', sessionWithShipping.shipping_details.address.postal_code);
+    console.log('  Country:', sessionWithShipping.shipping_details.address.country);
+    shippingAddressFound = true;
   }
 
-  // Get product information from metadata
-  console.log('Product ID:', session.metadata?.productId);
-  console.log('Shipping Cost:', session.metadata?.shippingCost);
+  // Try Payment Intent metadata (most visible in dashboard)
+  if (!shippingAddressFound && session.payment_intent) {
+    try {
+      const paymentIntentId = typeof session.payment_intent === 'string'
+        ? session.payment_intent
+        : session.payment_intent.id;
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+      if (paymentIntent.metadata?.shippingAddress) {
+        console.log('Shipping Address (from Payment Intent metadata):');
+        console.log(paymentIntent.metadata.shippingAddress);
+        shippingAddressFound = true;
+      }
+    } catch (error) {
+      console.error('Error retrieving Payment Intent:', error);
+    }
+  }
+
+  // Fallback to session metadata
+  if (!shippingAddressFound && session.metadata?.shippingAddress) {
+    console.log('Shipping Address (from Session metadata):');
+    console.log(session.metadata.shippingAddress);
+    shippingAddressFound = true;
+  }
+
+  if (!shippingAddressFound) {
+    console.log('Shipping Address: Not found in any location');
+  }
+
+  // Product information is available from line items if needed
 
   // Get line items for more details
   if (session.line_items) {
