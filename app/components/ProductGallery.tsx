@@ -18,23 +18,30 @@ export default function ProductGallery({
   selectedColor,
   colorImageMap
 }: ProductGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
-
   // Combine video and images for the gallery
   const allMedia = video ? [video, ...images] : images;
-  const isVideoSelected = video && selectedImage === 0;
+  // Initialize with video (index 0) if it exists, otherwise start with first image
+  const [selectedImage, setSelectedImage] = useState(video ? 0 : 0);
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
-  // Update selected image when color changes
+  const isVideoSelected = video && selectedImage === 0;
+  const [previousColor, setPreviousColor] = useState<string | undefined>(selectedColor);
+
+  // Update selected image when color changes (but not on initial render)
   useEffect(() => {
-    if (selectedColor && colorImageMap && colorImageMap[selectedColor]) {
+    // Only switch image if color actually changed (not on initial mount)
+    if (selectedColor && selectedColor !== previousColor && colorImageMap && colorImageMap[selectedColor]) {
       const colorImagePath = colorImageMap[selectedColor];
       const imageIndex = images.findIndex(img => img.includes(colorImagePath));
       if (imageIndex !== -1) {
         setSelectedImage(imageIndex + (video ? 1 : 0));
       }
+      setPreviousColor(selectedColor);
+    } else if (selectedColor && !previousColor) {
+      // On initial mount, just set the previous color without changing image
+      setPreviousColor(selectedColor);
     }
-  }, [selectedColor, colorImageMap, images, video]);
+  }, [selectedColor, colorImageMap, images, video, previousColor]);
 
   const handleThumbnailClick = (index: number) => {
     setSelectedImage(index);
@@ -48,11 +55,12 @@ export default function ProductGallery({
     <div className="flex flex-col gap-6">
       {/* Main Media Display */}
       <div className="flex-1">
-        <div className={`${isVideoSelected ? 'aspect-video' : 'aspect-square'} rounded-xl overflow-hidden relative group`}>
+        {/* Use consistent aspect-square for all media to prevent layout shift */}
+        <div className="aspect-square rounded-xl overflow-hidden relative group">
           {isVideoSelected && video ? (
             <div className="relative w-full h-full">
               <video
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 controls={false}
                 autoPlay
                 muted
@@ -86,6 +94,8 @@ export default function ProductGallery({
                   className="object-contain group-hover:scale-105 transition-transform duration-300"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   onError={() => handleImageError(selectedImage - (video ? 1 : 0))}
+                  unoptimized
+                  key={images[selectedImage - (video ? 1 : 0)]}
                 />
               )}
             </div>
@@ -132,6 +142,8 @@ export default function ProductGallery({
                   height={80}
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-200"
                   onError={() => handleImageError(imageIndex)}
+                  unoptimized
+                  key={media}
                 />
               )}
             </button>

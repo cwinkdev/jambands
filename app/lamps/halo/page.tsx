@@ -26,7 +26,7 @@ export default function HaloI() {
 
   // Map colors to their corresponding model images
   const colorImageMap = {
-    'standard-white': 'white_model',
+    'standard-white': 'front', // Standard white uses front image (white model)
     'ice-blue-translucent': 'light_blue_model',
     'purple-translucent': 'purple_model',
     'jade-translucent': 'jade_model',
@@ -34,25 +34,23 @@ export default function HaloI() {
     'blue-green-pearl': 'blue_green_model',
   };
 
-  // Images in the order you specified:
-  // 1. color1 (initial), 2. video, 3. back/top views, 4. other color views, 5. colored models
+  // Images in order: 1. views (front, back, side), 2. color variations, 3. models, 4. group image
   const productImages = [
-    '/products/halo/images/color1.jpg',           // Initial image
+    '/products/halo/images/front.jpg',            // Front view
     '/products/halo/images/back.jpg',             // Back view
     '/products/halo/images/side.jpg',             // Side view
-    '/products/halo/images/top_front.jpg',        // Top front view
-    '/products/halo/images/top_back.jpg',         // Top back view
-    '/products/halo/images/front.jpg',            // Front view
+    '/products/halo/images/color1.jpg',          // Color 1
     '/products/halo/images/color2.jpg',          // Color 2
     '/products/halo/images/color3.jpg',          // Color 3
     '/products/halo/images/color4.jpg',          // Color 4
-    '/products/halo/images/white_model.jpg',     // White model
+    '/products/halo/images/color5.jpg',          // Color 5
+    '/products/halo/images/color6.jpg',          // Color 6
     '/products/halo/images/light_blue_model.jpg', // Light blue model
     '/products/halo/images/purple_model.jpg',    // Purple model
     '/products/halo/images/jade_model.jpg',      // Jade model
     '/products/halo/images/orange_model.jpg',    // Orange model
     '/products/halo/images/blue_green_model.jpg', // Blue-green model
-    '/products/halo/images/all_models.jpg',      // All models
+    '/products/halo/images/all_models.jpg',      // All models group image
   ];
 
   const handleBuyNow = () => {
