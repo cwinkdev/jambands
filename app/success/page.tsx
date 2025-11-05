@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 
-export default function Success() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const { clearCart } = useCart();
   const sessionId = searchParams.get('session_id');
@@ -67,5 +67,25 @@ export default function Success() {
 
       <Footer />
     </>
+  );
+}
+
+export default function Success() {
+  return (
+    <Suspense fallback={
+      <>
+        <Navbar />
+        <main className="flex-1">
+          <section className="relative px-4 py-16 lg:py-24 sm:px-6 lg:px-8 flex items-center justify-center">
+            <div className="mx-auto max-w-2xl text-center">
+              <div className="animate-pulse text-gray-400">Loading...</div>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </>
+    }>
+      <SuccessContent />
+    </Suspense>
   );
 }
