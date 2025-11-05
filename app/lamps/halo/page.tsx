@@ -34,11 +34,10 @@ export default function HaloI() {
     'blue-green-pearl': 'blue_green_model',
   };
 
-  // Images in order: 1. views (front, back, side), 2. color variations, 3. models, 4. group image
+  // Images in order: 1. set shot, 2. front view, 3. color variations, 4. models, 5. group image
   const productImages = [
+    '/products/halo/images/set_shot.jpg',         // Set shot (first image after video)
     '/products/halo/images/front.jpg',            // Front view
-    '/products/halo/images/back.jpg',             // Back view
-    '/products/halo/images/side.jpg',             // Side view
     '/products/halo/images/color1.jpg',          // Color 1
     '/products/halo/images/color2.jpg',          // Color 2
     '/products/halo/images/color3.jpg',          // Color 3
@@ -47,10 +46,10 @@ export default function HaloI() {
     '/products/halo/images/color6.jpg',          // Color 6
     '/products/halo/images/light_blue_model.jpg', // Light blue model
     '/products/halo/images/purple_model.jpg',    // Purple model
-    '/products/halo/images/jade_model.jpg',      // Jade model
-    '/products/halo/images/orange_model.jpg',    // Orange model
+    '/products/halo/images/jade_model.jpg',       // Jade model
+    '/products/halo/images/orange_model.jpg',     // Orange model
     '/products/halo/images/blue_green_model.jpg', // Blue-green model
-    '/products/halo/images/all_models.jpg',      // All models group image
+    '/products/halo/images/all_models.jpg',       // All models group image
   ];
 
   const handleBuyNow = () => {
