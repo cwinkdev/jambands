@@ -3,12 +3,10 @@
 import { useState } from 'react';
 import ShippingAddressForm from './ShippingAddressForm';
 import { ShippingAddress, ShippingRate } from '@/app/api/types';
+import { CartItem } from '@/app/types/cart';
 
 interface CheckoutFormProps {
-  amount: number; // product amount in cents
-  productId?: string;
-  productName?: string;
-  quantity?: number;
+  items: CartItem[]; // Cart items array
   onSuccess?: () => void;
   onError?: (error: string) => void;
 }
@@ -16,10 +14,7 @@ interface CheckoutFormProps {
 type CheckoutStep = 'address' | 'shipping' | 'review';
 
 export default function CheckoutForm({
-  amount,
-  productId = 'halo',
-  productName = 'HALO Lamp',
-  quantity = 1,
+  items,
   onError
 }: CheckoutFormProps) {
   const [step, setStep] = useState<CheckoutStep>('address');
@@ -29,6 +24,9 @@ export default function CheckoutForm({
   const [isLoading, setIsLoading] = useState(false);
   const [isCalculatingShipping, setIsCalculatingShipping] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  // Calculate totals
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleAddressSubmit = async (address: ShippingAddress) => {
     setIsCalculatingShipping(true);
@@ -43,8 +41,10 @@ export default function CheckoutForm({
         },
         body: JSON.stringify({
           address,
-          productId,
-          quantity,
+          items: items.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
         }),
       });
 
@@ -97,10 +97,8 @@ export default function CheckoutForm({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          amount,
+          items,
           shippingCost: selectedShippingRate.amount,
-          productId,
-          productName,
           shippingAddress,
         }),
       });
@@ -129,7 +127,7 @@ export default function CheckoutForm({
     }
   };
 
-  const totalAmount = selectedShippingRate ? amount + selectedShippingRate.amount : amount;
+  const totalAmount = selectedShippingRate ? subtotal + selectedShippingRate.amount : subtotal;
 
   return (
     <div className="max-w-md mx-auto">
@@ -236,13 +234,15 @@ export default function CheckoutForm({
         {step === 'review' && (
           <div className="space-y-4">
             <div className="space-y-2 p-4 bg-white/5 rounded-lg">
-              <div className="flex justify-between items-center text-gray-300">
-                <span>Product:</span>
-                <span className="text-white">{productName}</span>
-              </div>
-              <div className="flex justify-between items-center text-gray-300">
+              {items.map((item) => (
+                <div key={item.id} className="flex justify-between items-center text-gray-300 text-sm">
+                  <span>{item.productName} × {item.quantity}</span>
+                  <span className="text-white">${((item.price * item.quantity) / 100).toFixed(2)}</span>
+                </div>
+              ))}
+              <div className="flex justify-between items-center text-gray-300 pt-2 border-t border-white/10">
                 <span>Subtotal:</span>
-                <span className="text-white">${(amount / 100).toFixed(2)}</span>
+                <span className="text-white">${(subtotal / 100).toFixed(2)}</span>
               </div>
               {selectedShippingRate && (
                 <div className="flex justify-between items-center text-gray-300">
@@ -263,7 +263,7 @@ export default function CheckoutForm({
               disabled={isLoading}
               className="w-full border-gradient-rgb hover:bg-white/10 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:border-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb"
             >
-              {isLoading ? 'Redirecting to Checkout...' : 'Complete Purchase'}
+              {isLoading ? 'Redirecting to Stripe...' : 'Continue to Stripe Checkout'}
             </button>
 
             <button
@@ -273,9 +273,11 @@ export default function CheckoutForm({
               ← Back to shipping options
             </button>
 
-            <p className="text-xs text-gray-400 mt-3 text-center">
-              You&apos;ll be redirected to Stripe Checkout to complete your purchase securely
-            </p>
+            <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-3 mt-3">
+              <p className="text-xs text-blue-300 text-center">
+                <strong>Note:</strong> Clicking above will redirect you to Stripe Checkout where you&apos;ll securely enter your payment information to complete the purchase.
+              </p>
+            </div>
           </div>
         )}
       </div>

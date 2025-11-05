@@ -3,17 +3,18 @@
 import { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import CheckoutForm from '../../components/checkout/CheckoutForm';
 import ProductGallery from '../../components/ProductGallery';
 import ColorPicker from '../../components/ColorPicker';
+import { useCart } from '../../context/CartContext';
 import { haloI } from '../../data/products';
 
 export default function HaloI() {
   const product = haloI;
-  const [showCheckout, setShowCheckout] = useState(false);
+  const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('standard-white');
   const [hoveredColor, setHoveredColor] = useState<string | null>(null);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const colorOptions = [
     { id: 'standard-white', name: 'Standard White', color: '#ffffff' },
@@ -52,18 +53,19 @@ export default function HaloI() {
     '/products/halo/images/all_models.jpg',       // All models group image
   ];
 
-  const handleBuyNow = () => {
-    setShowCheckout(true);
-  };
-
-  const handlePaymentSuccess = () => {
-    setShowCheckout(false);
-    // You could redirect to a success page or show a success message
-    alert('Payment successful! Thank you for your purchase.');
-  };
-
-  const handlePaymentError = (error: string) => {
-    console.error('Payment error:', error);
+  const handleAddToCart = () => {
+    const colorName = colorOptions.find(c => c.id === selectedColor)?.name || 'Standard White';
+    addItem({
+      productId: product.id,
+      productName: `${product.name} (${colorName})`,
+      color: selectedColor,
+      colorName: colorName,
+      price: Math.round(product.price * 100), // Convert to cents
+      quantity: quantity,
+    });
+    setAddedToCart(true);
+    setQuantity(1); // Reset quantity to 1 after adding to cart
+    setTimeout(() => setAddedToCart(false), 3000);
   };
 
   return (
@@ -144,10 +146,12 @@ export default function HaloI() {
 
                   {/* Add to Cart Button */}
                   <button
-                    onClick={handleBuyNow}
-                    className="w-full border-gradient-rgb hover:bg-white/10 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb mb-8"
+                    onClick={handleAddToCart}
+                    className={`w-full border-gradient-rgb hover:bg-white/10 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb mb-8 ${
+                      addedToCart ? 'bg-green-500/20 border-green-500' : ''
+                    }`}
                   >
-                    Purchase - ${(product.price * quantity).toFixed(2)}
+                    {addedToCart ? '✓ Added to Cart!' : `Add to Cart - $${(product.price * quantity).toFixed(2)}`}
                   </button>
 
                 </div>
@@ -156,43 +160,6 @@ export default function HaloI() {
           </div>
         </section>
 
-        {/* Checkout Modal */}
-        {showCheckout && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-gray-900 rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-white">Complete Your Purchase</h2>
-                <button
-                  onClick={() => setShowCheckout(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="mb-4 p-4 bg-white/5 rounded-lg">
-                <div className="flex justify-between items-center text-sm text-gray-300">
-                  <span>{product.name} × {quantity}</span>
-                  <span>${(product.price * quantity).toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm text-gray-300 mt-1">
-                  <span>Color: {colorOptions.find(c => c.id === selectedColor)?.name}</span>
-                </div>
-              </div>
-
-              <CheckoutForm
-                amount={Math.round(product.price * quantity * 100)}
-                productId={product.id}
-                productName={`${product.name} (${colorOptions.find(c => c.id === selectedColor)?.name})`}
-                quantity={quantity}
-                onSuccess={handlePaymentSuccess}
-                onError={handlePaymentError}
-              />
-            </div>
-          </div>
-        )}
       </main>
 
       <Footer />

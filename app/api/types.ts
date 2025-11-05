@@ -12,8 +12,10 @@ export interface ShippingAddress {
 
 export interface ShippingRateRequest {
   address: ShippingAddress;
-  productId: string;
-  quantity: number;
+  items: Array<{
+    productId: string;
+    quantity: number;
+  }>;
 }
 
 export interface ShippingRate {
@@ -51,11 +53,17 @@ export interface ShippoRatesResponse {
 export type ShippoRatesData = ShippoRate[] | ShippoRatesResponse;
 
 export interface CreatePaymentIntentRequest {
-  amount: number; // product amount in cents
+  items: Array<{
+    id: string;
+    productId: string;
+    productName: string;
+    color?: string;
+    colorName?: string;
+    price: number; // in cents
+    quantity: number;
+  }>;
   shippingCost: number; // shipping cost in cents
   currency?: string;
-  productId: string;
-  productName: string;
   shippingAddress: ShippingAddress;
 }
 

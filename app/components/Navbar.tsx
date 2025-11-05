@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { NavItem } from '../types';
 import Logo from './Logo';
+import { CartButton } from './Cart';
 
 const navigation: NavItem[] = [
   { name: 'Home', href: '/' },
@@ -56,7 +57,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex md:items-center md:space-x-4">
             <div className="ml-10 flex items-baseline space-x-4">
               {navigation.map((item) => (
                 <div key={item.name} className="relative">
@@ -123,10 +124,12 @@ export default function Navbar() {
                 </div>
               ))}
             </div>
+            <CartButton />
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button and cart */}
+          <div className="md:hidden flex items-center gap-2">
+            <CartButton />
             <button
               type="button"
               className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-gray-800"

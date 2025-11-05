@@ -10,38 +10,47 @@ export async function POST(request: NextRequest) {
   try {
     const body: CreatePaymentIntentRequest = await request.json();
     const {
-      amount,
+      items,
       shippingCost = 0,
       currency = 'usd',
-      productName = 'HALO Lamp',
       shippingAddress,
     } = body;
 
     // Debug: Log received shipping address
     console.log('Received shipping address:', JSON.stringify(shippingAddress, null, 2));
+    console.log('Received items:', JSON.stringify(items, null, 2));
+
+    // Validate items
+    if (!items || items.length === 0) {
+      return NextResponse.json(
+        { error: 'No items in cart' },
+        { status: 400 }
+      );
+    }
+
+    // Calculate total amount
+    const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     // Validate the amount (should be in cents)
-    if (!amount || amount < 50) {
+    if (totalAmount < 50) {
       return NextResponse.json(
         { error: 'Invalid amount. Minimum is $0.50' },
         { status: 400 }
       );
     }
 
-    // Build line items
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
-      {
-        price_data: {
-          currency: currency,
-          product_data: {
-            name: productName,
-            description: 'Sleek and satisfying. This custom, full RGB LED lamp brings a vibe into any room.',
-          },
-          unit_amount: amount, // Amount in cents
+    // Build line items from cart items
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => ({
+      price_data: {
+        currency: currency,
+        product_data: {
+          name: item.productName,
+          description: 'Sleek and satisfying. This custom, full RGB LED lamp brings a vibe into any room.',
         },
-        quantity: 1,
+        unit_amount: item.price, // Amount in cents per unit
       },
-    ];
+      quantity: item.quantity,
+    }));
 
     // Add shipping as a separate line item if provided
     if (shippingCost > 0) {
@@ -60,7 +69,15 @@ export async function POST(request: NextRequest) {
 
     // Build metadata for both session and payment intent
     const buildMetadata = (): Record<string, string> => {
-      const baseMetadata: Record<string, string> = {};
+      const baseMetadata: Record<string, string> = {
+        itemCount: items.length.toString(),
+      };
+
+      // Format each item as a single, readable line
+      items.forEach((item, index) => {
+        const itemLine = `${item.quantity}x ${item.productName}`;
+        baseMetadata[`item${index}`] = itemLine;
+      });
 
       // Format shipping address as a single, readable string
       if (shippingAddress) {
@@ -118,7 +135,7 @@ export async function POST(request: NextRequest) {
         metadata: metadata,
       },
       success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/lamps/halo`,
+      cancel_url: `${baseUrl}/`, // Go to home page on cancel (not product-specific)
     };
 
     const session = await stripe.checkout.sessions.create(sessionParams);

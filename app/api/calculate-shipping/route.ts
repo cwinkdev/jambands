@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ShippingRateRequest, ShippingRateResponse, ShippingRate, ShippoRatesData, ShippoRate } from '../types';
-import { haloI } from '@/app/data/products/lamps';
+import { allProducts, productsByCategory } from '@/app/data/products';
+import { ProductInfo } from '@/app/types';
 
 // Shippo API base URL
 const SHIPPO_API_BASE = 'https://api.goshippo.com';
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body: ShippingRateRequest = await request.json();
-    const { address, productId, quantity } = body;
+    const { address, items } = body;
 
     // Validate required fields
     if (!address || !address.street1 || !address.city || !address.state || !address.zip || !address.country) {
@@ -39,34 +40,64 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get product shipping weight
-    // For now, we'll use the halo product - you can expand this to fetch from a products map
-    let product;
-    if (productId === 'halo') {
-      product = haloI;
-    } else {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      );
-    }
+    // Calculate total weight and dimensions for all items
+    let totalWeight = 0;
+    let maxLength = 0;
+    let maxWidth = 0;
+    let totalHeight = 0;
 
-    if (!product.shippingWeight) {
-      return NextResponse.json(
-        { error: 'Product weight not configured' },
-        { status: 400 }
-      );
-    }
+    // Product lookup - searches all product categories by productId
+    const getProductById = (productId: string): ProductInfo | null => {
+      // First check flattened allProducts
+      for (const product of Object.values(allProducts)) {
+        if (product && typeof product === 'object' && 'id' in product && product.id === productId) {
+          return product as ProductInfo;
+        }
+      }
 
-    // Calculate total weight for multiple quantities
-    // Weight is the primary factor for USPS rate calculation
-    const totalWeight = product.shippingWeight * quantity;
+      // Then check by category structure
+      for (const category of Object.values(productsByCategory)) {
+        if (category && typeof category === 'object') {
+          for (const product of Object.values(category)) {
+            if (product && typeof product === 'object' && 'id' in product && product.id === productId) {
+              return product as ProductInfo;
+            }
+          }
+        }
+      }
+
+      return null;
+    };
+
+    for (const item of items) {
+      const product = getProductById(item.productId);
+
+      if (!product) {
+        return NextResponse.json(
+          { error: `Product not found: ${item.productId}` },
+          { status: 404 }
+        );
+      }
+
+      if (!product.shippingWeight) {
+        return NextResponse.json(
+          { error: `Product weight not configured: ${item.productId}` },
+          { status: 400 }
+        );
+      }
+
+      // Accumulate weight and dimensions
+      totalWeight += product.shippingWeight * item.quantity;
+      maxLength = Math.max(maxLength, product.shippingLength || 6);
+      maxWidth = Math.max(maxWidth, product.shippingWidth || 6);
+      totalHeight += (product.shippingHeight || 7) * item.quantity;
+    }
 
     // For multiple items, stack them (height increases)
     // Dimensions are secondary - weight is what determines USPS pricing
-    const boxLength = product.shippingLength || 6;
-    const boxWidth = product.shippingWidth || 6;
-    const boxHeight = (product.shippingHeight || 7) * quantity; // Stack items
+    const boxLength = maxLength;
+    const boxWidth = maxWidth;
+    const boxHeight = totalHeight; // Stack items
 
     // Shippo API: Create addresses and parcel, then create shipment to get rates
     // Step 1: Create recipient address
@@ -135,6 +166,21 @@ export async function POST(request: NextRequest) {
     // Step 3: Create parcel
     // Weight is the primary factor for USPS rate calculation
     // Dimensions are used by Shippo but weight determines the actual shipping cost
+    // Shippo requires weight to have no more than 10 digits total (including decimal point)
+    // Format weight to ensure it meets Shippo's requirements
+    let weightValue: string;
+    const formattedWeight = Math.round(totalWeight * 100) / 100; // Round to 2 decimal places
+    const weightString = formattedWeight.toString();
+
+    // Check if weight string exceeds 10 digits (excluding decimal point)
+    const digitsOnly = weightString.replace('.', '');
+    if (digitsOnly.length > 10) {
+      // If too long, round to whole number (no decimal places)
+      weightValue = Math.round(totalWeight).toString();
+    } else {
+      weightValue = weightString;
+    }
+
     const parcelResponse = await fetch(`${SHIPPO_API_BASE}/parcels`, {
       method: 'POST',
       headers: {
@@ -142,7 +188,7 @@ export async function POST(request: NextRequest) {
         'Authorization': `ShippoToken ${SHIPPO_API_KEY}`,
       },
       body: JSON.stringify({
-        weight: totalWeight.toString(), // Combined weight is what matters for pricing
+        weight: weightValue,
         weight_unit: 'oz',
         length: boxLength.toString(),
         width: boxWidth.toString(),

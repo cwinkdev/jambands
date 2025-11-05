@@ -1,8 +1,26 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Link from 'next/link';
+import { useCart } from '../context/CartContext';
 
 export default function Success() {
+  const searchParams = useSearchParams();
+  const { clearCart } = useCart();
+  const sessionId = searchParams.get('session_id');
+  const hasClearedCart = useRef(false);
+
+  // Clear cart when success page loads (payment completed) - only once
+  useEffect(() => {
+    if (sessionId && !hasClearedCart.current) {
+      clearCart();
+      hasClearedCart.current = true;
+    }
+  }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       <Navbar />
@@ -28,24 +46,6 @@ export default function Success() {
               Thank you for your purchase! Your Halo lamp is on its way.
               You&apos;ll receive a confirmation email shortly with tracking information.
             </p>
-
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">What&apos;s Next?</h3>
-              <div className="space-y-3 text-gray-300 text-sm">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
-                  <span>Processing your order (1-2 business days)</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
-                  <span>Shipping notification with tracking</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
-                  <span>Delivery within 2-3 business days</span>
-                </div>
-              </div>
-            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
