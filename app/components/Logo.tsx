@@ -28,7 +28,10 @@ export default function Logo({
   const alt = 'JamBands - Light Up Your Night';
 
   return (
-    <Link href="/" className={`inline-block ${className}`}>
+    <Link
+      href="/"
+      className={`inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded ${className}`}
+    >
       <Image
         src={logoSrc}
         alt={alt}

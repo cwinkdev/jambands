@@ -72,7 +72,7 @@ export default function HaloI() {
     <>
       <Navbar />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
 
 
         {/* Product Showcase */}

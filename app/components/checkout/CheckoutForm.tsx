@@ -197,8 +197,9 @@ export default function CheckoutForm({
               {shippingRates.map((rate) => (
                 <button
                   key={rate.rateId}
+                  type="button"
                   onClick={() => handleShippingSelect(rate)}
-                  className={`w-full p-4 rounded-lg border text-left transition-all ${
+                  className={`w-full p-4 rounded-lg border text-left transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
                     selectedShippingRate?.rateId === rate.rateId
                       ? 'border-white/30 bg-white/10'
                       : 'border-white/10 hover:border-white/20 hover:bg-white/5'
@@ -222,8 +223,9 @@ export default function CheckoutForm({
               ))}
             </div>
             <button
+              type="button"
               onClick={() => setStep('address')}
-              className="w-full text-gray-400 hover:text-white text-sm mt-4"
+              className="w-full text-gray-400 hover:text-white text-sm mt-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               ← Back to address
             </button>
@@ -262,13 +264,15 @@ export default function CheckoutForm({
               onClick={handleCheckout}
               disabled={isLoading}
               className="w-full border-gradient-rgb hover:bg-white/10 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:border-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb"
+              type="button"
             >
               {isLoading ? 'Redirecting to Stripe...' : 'Continue to Stripe Checkout'}
             </button>
 
             <button
+              type="button"
               onClick={() => setStep('shipping')}
-              className="w-full text-gray-400 hover:text-white text-sm mt-2"
+              className="w-full text-gray-400 hover:text-white text-sm mt-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               ← Back to shipping options
             </button>

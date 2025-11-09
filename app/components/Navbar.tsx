@@ -38,6 +38,21 @@ export default function Navbar() {
     setCloseTimeout(timeout);
   };
 
+  const handleDropdownKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    itemName: string
+  ) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      setOpenDropdown((prev) => (prev === itemName ? null : itemName));
+    }
+
+    if (event.key === 'Escape') {
+      setOpenDropdown(null);
+      (event.target as HTMLButtonElement).blur();
+    }
+  };
+
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
@@ -60,28 +75,42 @@ export default function Navbar() {
           <div className="hidden md:flex md:items-center md:space-x-4">
             <div className="ml-10 flex items-baseline space-x-4">
               {navigation.map((item) => (
-                <div key={item.name} className="relative">
+                <div
+                  key={item.name}
+                  className="relative"
+                  onFocusCapture={() => {
+                    if (item.dropdown) {
+                      handleMouseEnter(item.name);
+                    }
+                  }}
+                  onBlurCapture={(event) => {
+                    if (
+                      item.dropdown &&
+                      !event.currentTarget.contains(event.relatedTarget as Node)
+                    ) {
+                      setOpenDropdown(null);
+                    }
+                  }}
+                >
                   {item.dropdown ? (
                     <div
                       className="relative"
                       onMouseEnter={() => handleMouseEnter(item.name)}
                       onMouseLeave={handleMouseLeave}
                     >
-                      {item.href ? (
-                        <Link href={item.href} className="px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors flex items-center">
-                          {item.name}
-                          <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </Link>
-                      ) : (
-                        <button className="px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors flex items-center">
-                          {item.name}
-                          <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        className="px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors flex items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        aria-haspopup="true"
+                        aria-expanded={openDropdown === item.name}
+                        onClick={() => setOpenDropdown((prev) => (prev === item.name ? null : item.name))}
+                        onKeyDown={(event) => handleDropdownKeyDown(event, item.name)}
+                      >
+                        {item.name}
+                        <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
 
                       {/* Dropdown Menu */}
                       {openDropdown === item.name && (
@@ -89,6 +118,7 @@ export default function Navbar() {
                           className="absolute left-0 mt-0 w-64 bg-black/40"
                           onMouseEnter={() => handleMouseEnter(item.name)}
                           onMouseLeave={handleMouseLeave}
+                          role="menu"
                         >
                           <div>
                             {item.dropdown.map((dropdownItem) => (
@@ -96,7 +126,8 @@ export default function Navbar() {
                                 <Link
                                   key={dropdownItem.name}
                                   href={dropdownItem.href}
-                                  className="block px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors"
+                                  className="block px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                                  role="menuitem"
                                 >
                                   <div className="font-medium">{dropdownItem.name}</div>
                                 </Link>
@@ -104,6 +135,7 @@ export default function Navbar() {
                                 <div
                                   key={dropdownItem.name}
                                   className="block px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider"
+                                  role="presentation"
                                 >
                                   {dropdownItem.name}
                                 </div>
@@ -116,7 +148,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       href={item.href!}
-                      className=" px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors"
+                      className=" px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                     >
                       {item.name}
                     </Link>
@@ -134,7 +166,7 @@ export default function Navbar() {
               type="button"
               className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-gray-800"
               aria-controls="mobile-menu"
-              aria-expanded="false"
+              aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
@@ -181,6 +213,7 @@ export default function Navbar() {
                       <Link
                         href={item.href}
                         className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors"
+                      className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {item.name}
@@ -197,6 +230,7 @@ export default function Navbar() {
                             key={dropdownItem.name}
                             href={dropdownItem.href}
                             className="block rounded-md px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                      className="block rounded-md px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             {dropdownItem.name}
@@ -216,6 +250,7 @@ export default function Navbar() {
                   <Link
                     href={item.href!}
                     className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors"
+                      className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
