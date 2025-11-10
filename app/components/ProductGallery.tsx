@@ -120,7 +120,7 @@ export default function ProductGallery({
               key={index}
               type="button"
               onClick={() => handleThumbnailClick(index)}
-              className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+              className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 ${
                 isSelected
                   ? 'border-accent ring-2 ring-accent/50'
                   : 'border-gray-600 hover:border-gray-400'

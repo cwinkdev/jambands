@@ -100,7 +100,7 @@ export default function Navbar() {
                     >
                       <button
                         type="button"
-                        className="px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors flex items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors flex items-center focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
                         aria-haspopup="true"
                         aria-expanded={openDropdown === item.name}
                         onClick={() => setOpenDropdown((prev) => (prev === item.name ? null : item.name))}
@@ -126,7 +126,7 @@ export default function Navbar() {
                                 <Link
                                   key={dropdownItem.name}
                                   href={dropdownItem.href}
-                                  className="block px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                                  className="block px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
                                   role="menuitem"
                                 >
                                   <div className="font-medium">{dropdownItem.name}</div>
@@ -148,7 +148,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       href={item.href!}
-                      className=" px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                      className=" px-3 py-2 text-sm font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
                     >
                       {item.name}
                     </Link>
@@ -212,8 +212,7 @@ export default function Navbar() {
                     {item.href ? (
                       <Link
                         href={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {item.name}
@@ -229,8 +228,7 @@ export default function Navbar() {
                           <Link
                             key={dropdownItem.name}
                             href={dropdownItem.href}
-                            className="block rounded-md px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
-                      className="block rounded-md px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                            className="block rounded-md px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             {dropdownItem.name}
@@ -249,8 +247,7 @@ export default function Navbar() {
                 ) : (
                   <Link
                     href={item.href!}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}

@@ -199,7 +199,7 @@ export default function CheckoutForm({
                   key={rate.rateId}
                   type="button"
                   onClick={() => handleShippingSelect(rate)}
-                  className={`w-full p-4 rounded-lg border text-left transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                  className={`w-full p-4 rounded-lg border text-left transition-all focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent ${
                     selectedShippingRate?.rateId === rate.rateId
                       ? 'border-white/30 bg-white/10'
                       : 'border-white/10 hover:border-white/20 hover:bg-white/5'
@@ -225,7 +225,7 @@ export default function CheckoutForm({
             <button
               type="button"
               onClick={() => setStep('address')}
-              className="w-full text-gray-400 hover:text-white text-sm mt-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="w-full text-gray-400 hover:text-white text-sm mt-4 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               ← Back to address
             </button>
@@ -272,7 +272,7 @@ export default function CheckoutForm({
             <button
               type="button"
               onClick={() => setStep('shipping')}
-              className="w-full text-gray-400 hover:text-white text-sm mt-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="w-full text-gray-400 hover:text-white text-sm mt-2 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               ← Back to shipping options
             </button>

@@ -40,7 +40,7 @@ export default function ColorPicker({ colors, selectedColor, onColorChange, onCo
             onClick={() => onColorChange(color.id)}
             onMouseEnter={() => handleMouseEnter(color.id)}
             onMouseLeave={handleMouseLeave}
-            className={`p-3 rounded-lg border-2 transition-all duration-200 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+            className={`p-3 rounded-lg border-2 transition-all duration-200 text-left focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 ${
               selectedColor === color.id
                 ? 'border-accent ring-2 ring-accent/50 bg-accent/10'
                 : hoveredColor === color.id

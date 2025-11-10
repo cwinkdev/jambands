@@ -33,7 +33,7 @@ export default function Cart({ onClose, onCheckout }: CartProps) {
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="text-gray-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
             aria-label="Close cart"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -66,7 +66,7 @@ export default function Cart({ onClose, onCheckout }: CartProps) {
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="w-8 h-8 bg-white/10 rounded flex items-center justify-center hover:bg-white/20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                      className="w-8 h-8 bg-white/10 rounded flex items-center justify-center hover:bg-white/20 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
                       aria-label={`Decrease quantity of ${item.productName}`}
                     >
                       <span className="text-white">-</span>
@@ -75,7 +75,7 @@ export default function Cart({ onClose, onCheckout }: CartProps) {
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-8 h-8 bg-white/10 rounded flex items-center justify-center hover:bg-white/20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                      className="w-8 h-8 bg-white/10 rounded flex items-center justify-center hover:bg-white/20 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
                       aria-label={`Increase quantity of ${item.productName}`}
                     >
                       <span className="text-white">+</span>
@@ -83,7 +83,7 @@ export default function Cart({ onClose, onCheckout }: CartProps) {
                     <button
                       type="button"
                       onClick={() => removeItem(item.id)}
-                      className="ml-2 text-gray-400 hover:text-red-400 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400"
+                      className="ml-2 text-gray-400 hover:text-red-400 transition-colors focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
                       aria-label={`Remove ${item.productName} from cart`}
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -107,7 +107,7 @@ export default function Cart({ onClose, onCheckout }: CartProps) {
             <button
               type="button"
               onClick={onCheckout}
-              className="w-full border-gradient-rgb hover:bg-white/10 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="w-full border-gradient-rgb hover:bg-white/10 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105 glow-rgb focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
             >
               Proceed to Checkout
             </button>
@@ -129,7 +129,7 @@ export function CartButton() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="relative p-2 text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="relative p-2 text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
         aria-label={`Open cart${itemCount > 0 ? ` (${itemCount} items)` : ''}`}
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -177,7 +177,7 @@ function CartWrapper({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={handleClose}
-            className="text-gray-400 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="text-gray-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
             aria-label="Close checkout"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" focusable="false">

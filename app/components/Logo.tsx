@@ -30,7 +30,7 @@ export default function Logo({
   return (
     <Link
       href="/"
-      className={`inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded ${className}`}
+      className={`inline-block focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent rounded ${className}`}
     >
       <Image
         src={logoSrc}
